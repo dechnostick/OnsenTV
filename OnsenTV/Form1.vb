@@ -103,13 +103,14 @@ Public Class Form1
         End If
 
         For Each s As String In regkey.GetSubKeyNames
+
             Dim subkey As Microsoft.Win32.RegistryKey = _
                 Microsoft.Win32.Registry.LocalMachine.OpenSubKey(UNINST_PATH & "\" & s, False)
 
-            Dim displayName As String = subkey.GetValue("DisplayName").ToString
+            Dim displayName As Object = subkey.GetValue("DisplayName")
             If Not displayName Is Nothing Then
 
-                If displayName.Contains("Firefox") Then
+                If displayName.ToString().Contains("Firefox") Then
                     Return subkey.GetValue("InstallLocation").ToString
                 End If
             End If
@@ -130,10 +131,10 @@ Public Class Form1
             Dim subkey As Microsoft.Win32.RegistryKey = _
                 Microsoft.Win32.Registry.LocalMachine.OpenSubKey(UNINST_PATH & "\" & s, False)
 
-            Dim displayName As String = subkey.GetValue("DisplayName").ToString
+            Dim displayName As Object = subkey.GetValue("DisplayName")
             If Not displayName Is Nothing Then
 
-                If displayName.Contains("Opera") Then
+                If displayName.ToString().Contains("Opera") Then
                     Return subkey.GetValue("InstallLocation").ToString
                 End If
             End If
