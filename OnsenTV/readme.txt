@@ -35,10 +35,10 @@
 　必要であれば以下の場所に保存された設定ファイルも削除してください。
 
 　Windows Vista:
-　　C:\Users\<UserName>\AppData\Local\温泉旅館TV
+　　C:\Users\<UserName>\AppData\Local\OnsenTV
 
 　Windows XP:
-　　C:\Documents and Settings\<UserName>\Local Settings\Application Data\温泉旅館TV
+　　C:\Documents and Settings\<UserName>\Local Settings\Application Data\OnsenTV
 
 ■使い方
 　温泉旅館TV.exe を起動します。
