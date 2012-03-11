@@ -22,11 +22,11 @@
 ------------------------------------------------------------
 
 ■動作環境
-　Windows Vista, Windows XP
+　Windows 7, Windows Vista, Windows XP
 　(Microsoft .NET Framework Version 2.0 が必要です)
 
 ■インストール方法
-　温泉旅館TV.exe、温泉旅館TV設定.exe、Interop.SHDocVw.dll を
+　OnsenTV.exe, SetOnsenTV.exe, Interop.SHDocVw.dll を
 　適当なフォルダに保存してください。
 
 ■アンインストール方法
@@ -34,14 +34,14 @@
 
 　必要であれば以下の場所に保存された設定ファイルも削除してください。
 
-　Windows Vista:
+　Windows 7, Windows Vista:
 　　C:\Users\<UserName>\AppData\Local\OnsenTV
 
 　Windows XP:
 　　C:\Documents and Settings\<UserName>\Local Settings\Application Data\OnsenTV
 
 ■使い方
-　温泉旅館TV.exe を起動します。
+　OnsenTV.exe を起動します。
 
 　初回起動時は設定ダイアログが表示されます。
 
@@ -55,7 +55,7 @@
 　制限時間後に強制終了します。
 　待ち時間が経過するまで再起動できません。
 
-　温泉旅館TV設定.exe を起動すると設定した内容を変更できます。
+　SetOnsenTV.exe を起動すると設定した内容を変更できます。
 
 ■免責事項
 　このプログラムによって生じたいかなる結果にも作者は一切責任を負いません。
@@ -73,6 +73,15 @@
 
 --------------------------------------------------------------------------------
 ■履歴
+
+Ver.0.4 (2012/03/12)
+　変更：
+　　・プログラム名変更
+　　　温泉旅館TV -> OnsenTV
+　　　温泉旅館TV設定 -> SetOnsenTV
+
+　改善：
+　　・Safari 対応
 
 Ver.0.3 (2009/12/02)
 　改善：
