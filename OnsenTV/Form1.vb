@@ -4,6 +4,7 @@ Public Class Form1
 
     Private Const TITLE As String = "â∑êÚó∑äŸTV"
 
+    Private Const SAFARI As String = "SF"
     Private Const OPERA As String = "OP"
     Private Const CHROME As String = "GC"
     Private Const FIREFOX As String = "FF"
@@ -37,6 +38,9 @@ Public Class Form1
         Dim browser As String = My.Settings.Browser
 
         Select Case browser
+
+            Case SAFARI
+                Me.RadioButtonSF.Checked = True
 
             Case OPERA
                 Me.RadioButtonOP.Checked = True
@@ -142,6 +146,30 @@ Public Class Form1
         Return String.Empty
     End Function
 
+    Private Function GetSafariPath() As String
+
+        Dim regkey As Microsoft.Win32.RegistryKey = _
+            Microsoft.Win32.Registry.LocalMachine.OpenSubKey(UNINST_PATH, False)
+
+        If regkey Is Nothing Then
+            Return String.Empty
+        End If
+
+        For Each s As String In regkey.GetSubKeyNames
+            Dim subkey As Microsoft.Win32.RegistryKey = _
+                Microsoft.Win32.Registry.LocalMachine.OpenSubKey(UNINST_PATH & "\" & s, False)
+
+            Dim displayName As Object = subkey.GetValue("DisplayName")
+            If Not displayName Is Nothing Then
+
+                If displayName.ToString().Contains("Safari") Then
+                    Return subkey.GetValue("InstallLocation").ToString
+                End If
+            End If
+        Next
+        Return String.Empty
+    End Function
+
     Private Sub ButtonOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonOK.Click
 
         My.Settings.Limit = Decimal.ToInt32(Me.NumericUpDownêßå¿éûä‘.Value)
@@ -150,7 +178,10 @@ Public Class Form1
 
         Dim browser As String = String.Empty
 
-        If Me.RadioButtonOP.Checked Then
+        If Me.RadioButtonSF.Checked Then
+            browser = SAFARI
+
+        ElseIf Me.RadioButtonOP.Checked Then
             browser = OPERA
 
         ElseIf Me.RadioButtonGC.Checked Then
@@ -158,7 +189,6 @@ Public Class Form1
 
         ElseIf Me.RadioButtonFF.Checked Then
             browser = FIREFOX
-
         Else
             browser = IE
         End If
@@ -205,6 +235,9 @@ Public Class Form1
             Dim path As String = String.Empty
 
             Select Case browser
+
+                Case SAFARI
+                    path = Me.GetSafariPath() & "\safari.exe"
 
                 Case OPERA
                     path = Me.GetOperaPath() & "\opera.exe"

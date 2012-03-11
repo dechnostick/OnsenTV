@@ -23,18 +23,19 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Me.NumericUpDown制限時間 = New System.Windows.Forms.NumericUpDown
-        Me.Label制限時間 = New System.Windows.Forms.Label
-        Me.RadioButtonGC = New System.Windows.Forms.RadioButton
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.RadioButtonOP = New System.Windows.Forms.RadioButton
-        Me.RadioButtonFF = New System.Windows.Forms.RadioButton
-        Me.RadioButtonIE = New System.Windows.Forms.RadioButton
-        Me.ButtonOK = New System.Windows.Forms.Button
-        Me.Buttonキャンセル = New System.Windows.Forms.Button
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.NumericUpDown待ち時間 = New System.Windows.Forms.NumericUpDown
-        Me.CheckBoxSound = New System.Windows.Forms.CheckBox
+        Me.NumericUpDown制限時間 = New System.Windows.Forms.NumericUpDown()
+        Me.Label制限時間 = New System.Windows.Forms.Label()
+        Me.RadioButtonGC = New System.Windows.Forms.RadioButton()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.RadioButtonOP = New System.Windows.Forms.RadioButton()
+        Me.RadioButtonFF = New System.Windows.Forms.RadioButton()
+        Me.RadioButtonIE = New System.Windows.Forms.RadioButton()
+        Me.ButtonOK = New System.Windows.Forms.Button()
+        Me.Buttonキャンセル = New System.Windows.Forms.Button()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.NumericUpDown待ち時間 = New System.Windows.Forms.NumericUpDown()
+        Me.CheckBoxSound = New System.Windows.Forms.CheckBox()
+        Me.RadioButtonSF = New System.Windows.Forms.RadioButton()
         CType(Me.NumericUpDown制限時間, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         CType(Me.NumericUpDown待ち時間, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -42,7 +43,7 @@ Partial Class Form1
         '
         'NumericUpDown制限時間
         '
-        Me.NumericUpDown制限時間.Location = New System.Drawing.Point(94, 135)
+        Me.NumericUpDown制限時間.Location = New System.Drawing.Point(87, 150)
         Me.NumericUpDown制限時間.Name = "NumericUpDown制限時間"
         Me.NumericUpDown制限時間.Size = New System.Drawing.Size(51, 19)
         Me.NumericUpDown制限時間.TabIndex = 4
@@ -51,7 +52,7 @@ Partial Class Form1
         'Label制限時間
         '
         Me.Label制限時間.AutoSize = True
-        Me.Label制限時間.Location = New System.Drawing.Point(17, 137)
+        Me.Label制限時間.Location = New System.Drawing.Point(10, 152)
         Me.Label制限時間.Name = "Label制限時間"
         Me.Label制限時間.Size = New System.Drawing.Size(73, 12)
         Me.Label制限時間.TabIndex = 1
@@ -69,13 +70,14 @@ Partial Class Form1
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.RadioButtonSF)
         Me.GroupBox1.Controls.Add(Me.RadioButtonOP)
         Me.GroupBox1.Controls.Add(Me.RadioButtonFF)
         Me.GroupBox1.Controls.Add(Me.RadioButtonIE)
         Me.GroupBox1.Controls.Add(Me.RadioButtonGC)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(190, 110)
+        Me.GroupBox1.Size = New System.Drawing.Size(150, 132)
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "起動するブラウザ"
@@ -114,7 +116,7 @@ Partial Class Form1
         '
         'ButtonOK
         '
-        Me.ButtonOK.Location = New System.Drawing.Point(12, 215)
+        Me.ButtonOK.Location = New System.Drawing.Point(5, 230)
         Me.ButtonOK.Name = "ButtonOK"
         Me.ButtonOK.Size = New System.Drawing.Size(75, 23)
         Me.ButtonOK.TabIndex = 7
@@ -123,7 +125,7 @@ Partial Class Form1
         '
         'Buttonキャンセル
         '
-        Me.Buttonキャンセル.Location = New System.Drawing.Point(93, 215)
+        Me.Buttonキャンセル.Location = New System.Drawing.Point(86, 230)
         Me.Buttonキャンセル.Name = "Buttonキャンセル"
         Me.Buttonキャンセル.Size = New System.Drawing.Size(75, 23)
         Me.Buttonキャンセル.TabIndex = 8
@@ -133,7 +135,7 @@ Partial Class Form1
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(17, 164)
+        Me.Label1.Location = New System.Drawing.Point(10, 179)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(70, 12)
         Me.Label1.TabIndex = 8
@@ -141,7 +143,7 @@ Partial Class Form1
         '
         'NumericUpDown待ち時間
         '
-        Me.NumericUpDown待ち時間.Location = New System.Drawing.Point(94, 162)
+        Me.NumericUpDown待ち時間.Location = New System.Drawing.Point(87, 177)
         Me.NumericUpDown待ち時間.Name = "NumericUpDown待ち時間"
         Me.NumericUpDown待ち時間.Size = New System.Drawing.Size(51, 19)
         Me.NumericUpDown待ち時間.TabIndex = 5
@@ -150,19 +152,29 @@ Partial Class Form1
         'CheckBoxSound
         '
         Me.CheckBoxSound.AutoSize = True
-        Me.CheckBoxSound.Location = New System.Drawing.Point(19, 187)
+        Me.CheckBoxSound.Location = New System.Drawing.Point(12, 202)
         Me.CheckBoxSound.Name = "CheckBoxSound"
         Me.CheckBoxSound.Size = New System.Drawing.Size(150, 16)
         Me.CheckBoxSound.TabIndex = 6
         Me.CheckBoxSound.Text = "起動・終了時に音を鳴らす"
         Me.CheckBoxSound.UseVisualStyleBackColor = True
         '
+        'RadioButtonSF
+        '
+        Me.RadioButtonSF.AutoSize = True
+        Me.RadioButtonSF.Location = New System.Drawing.Point(6, 107)
+        Me.RadioButtonSF.Name = "RadioButtonSF"
+        Me.RadioButtonSF.Size = New System.Drawing.Size(53, 16)
+        Me.RadioButtonSF.TabIndex = 8
+        Me.RadioButtonSF.Text = "Safari"
+        Me.RadioButtonSF.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.ClientSize = New System.Drawing.Size(214, 245)
+        Me.ClientSize = New System.Drawing.Size(221, 267)
         Me.Controls.Add(Me.CheckBoxSound)
         Me.Controls.Add(Me.NumericUpDown待ち時間)
         Me.Controls.Add(Me.Label1)
@@ -194,5 +206,6 @@ Partial Class Form1
     Friend WithEvents NumericUpDown待ち時間 As System.Windows.Forms.NumericUpDown
     Friend WithEvents CheckBoxSound As System.Windows.Forms.CheckBox
     Friend WithEvents RadioButtonOP As System.Windows.Forms.RadioButton
+    Friend WithEvents RadioButtonSF As System.Windows.Forms.RadioButton
 
 End Class

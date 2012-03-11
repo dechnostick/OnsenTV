@@ -141,7 +141,6 @@
     <None Include="bgm_coinin_1.wav" />
     <None Include="bgm_gameover_1.wav" />
     <BaseApplicationManifest Include="My Project\app.manifest" />
-    <Content Include="readme.txt" />
     <Content Include="telly_256.ico" />
   </ItemGroup>
   <ItemGroup>

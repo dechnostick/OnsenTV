@@ -10,7 +10,7 @@ Public Class Form1
         End If
 
         Me.Visible = False
-        Process.Start("‰·ò—·ŠÙTV.exe", "settings")
+        Process.Start("OnsenTV.exe", "settings")
         Me.Close()
     End Sub
 
