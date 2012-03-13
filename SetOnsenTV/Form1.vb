@@ -4,7 +4,7 @@ Public Class Form1
 
         If Environment.GetCommandLineArgs.Length = 2 Then
             PictureBox1.Controls.Add(Label1)
-            Label1.Text = "Žc‚è" & Environment.GetCommandLineArgs(1) & "•ª!"
+            Label1.Text = "Žc‚è" & Environment.GetCommandLineArgs(1) & "•ª!!"
             PictureBox1.Show()
             Return
         End If
