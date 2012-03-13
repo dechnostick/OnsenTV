@@ -238,23 +238,23 @@ Public Class Form1
 
             Case FIREFOX
                 processName = "firefox"
-                errorMessage = "Mozilla Firefox は既に起動済みです。"
+                errorMessage = "Mozilla Firefox は起動済みです。"
 
             Case SAFARI
                 processName = "safari"
-                errorMessage = "Safari は既に起動済みです。"
+                errorMessage = "Safari は起動済みです。"
 
             Case CHROME
                 processName = "chrome"
-                errorMessage = "Google Chrome は既に起動済みです。"
+                errorMessage = "Google Chrome は起動済みです。"
 
             Case OPERA
                 processName = "opera"
-                errorMessage = "Opera は既に起動済みです。"
+                errorMessage = "Opera は起動済みです。"
 
             Case Else
                 processName = "iexplore"
-                errorMessage = "Internet Explorer は既に起動済みです。"
+                errorMessage = "Internet Explorer は起動済みです。"
         End Select
 
         For Each p As Process In Process.GetProcesses()
