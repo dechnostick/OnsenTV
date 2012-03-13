@@ -1,228 +1,144 @@
-Imports System.Runtime.InteropServices
+Imports Microsoft.Win32.Registry
+Imports Microsoft.Win32
 
 Public Class Form1
 
     Private Const TITLE As String = "温泉旅館TV"
 
-    Private Const SAFARI As String = "SF"
-    Private Const OPERA As String = "OP"
-    Private Const CHROME As String = "GC"
-    Private Const FIREFOX As String = "FF"
+    Private Const FIREFOX As String = "Firefox"
+    Private Const CHROME As String = "Chrome"
+    Private Const SAFARI As String = "Safari"
+    Private Const OPERA As String = "Opera"
     Private Const IE As String = "IE"
+
+    Private FIREFOX_PATH As String
+    Private CHROME_PATH As String
+    Private SAFARI_PATH As String
+    Private OPERA_PATH As String
 
     Private Const UNINST_PATH As String = "Software\Microsoft\Windows\CurrentVersion\Uninstall"
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
+        ShowSettings()
+
         If My.Settings.Browser.Equals(String.Empty) Then
-            Me.ShowSettings()
             Return
         End If
 
         If Environment.GetCommandLineArgs.Length = 2 Then
-            Me.ShowSettings()
+
             Return
         End If
 
-        Me.ShowBrowser()
+        ShowBrowser()
     End Sub
 
     Private Sub ShowSettings()
 
-        Me.RadioButtonGC.Enabled = Not Me.GetChromePath().Equals(String.Empty)
-        Me.RadioButtonFF.Enabled = Not Me.GetFirefoxPath().Equals(String.Empty)
-        Me.RadioButtonOP.Enabled = Not Me.GetOperaPath().Equals(String.Empty)
-
-        Dim isDefault As Boolean = False
-
         Dim browser As String = My.Settings.Browser
+        RadioButtonFF.Checked = browser.Equals(FIREFOX)
+        RadioButtonSF.Checked = browser.Equals(SAFARI)
+        RadioButtonGC.Checked = browser.Equals(CHROME)
+        RadioButtonOP.Checked = browser.Equals(OPERA)
+        RadioButtonIE.Checked = browser.Equals(IE)
 
-        Select Case browser
+        NumericUpDown制限時間.Value = My.Settings.Limit
+        NumericUpDown待ち時間.Value = My.Settings.Wait
+        CheckBoxSound.Checked = My.Settings.Sound
 
-            Case SAFARI
-                Me.RadioButtonSF.Checked = True
-
-            Case OPERA
-                Me.RadioButtonOP.Checked = True
-
-            Case CHROME
-                Me.RadioButtonGC.Checked = True
-
-            Case FIREFOX
-                Me.RadioButtonFF.Checked = True
-
-            Case IE
-                Me.RadioButtonIE.Checked = True
-
-            Case Else
-                Me.RadioButtonIE.Checked = True
-                isDefault = True
-        End Select
-
-        Dim limit As Integer = My.Settings.Limit
-        Me.NumericUpDown制限時間.Value = limit
-
-        Dim wait As Integer = My.Settings.Wait
-        Me.NumericUpDown待ち時間.Value = wait
-
-        Me.CheckBoxSound.Checked = My.Settings.Sound
-
-        If isDefault Then
-            Me.NumericUpDown制限時間.Value = 10
-            Me.NumericUpDown待ち時間.Value = 5
+        If browser.Equals(String.Empty) Then
+            NumericUpDown制限時間.Value = 10
+            NumericUpDown待ち時間.Value = 5
         End If
+
+        Dim regkey As RegistryKey = CurrentUser.OpenSubKey(UNINST_PATH, False)
+        Dim sk As String = "InstallLocation"
+
+        For Each s As String In regkey.GetSubKeyNames
+
+            Dim subkey As RegistryKey = CurrentUser.OpenSubKey(UNINST_PATH & "\" & s, False)
+
+            If Not subkey Is Nothing Then
+
+                Dim displayName As String = subkey.GetValue("DisplayName").ToString
+
+                If Not displayName Is Nothing Then
+
+                    If displayName.ToString().Contains(CHROME) Then
+                        CHROME_PATH = subkey.GetValue(sk).ToString & "\" & CHROME & ".exe"
+                        RadioButtonGC.Enabled = True
+                    End If
+                End If
+            End If
+        Next
+
+        regkey = LocalMachine.OpenSubKey(UNINST_PATH, False)
+        For Each s As String In regkey.GetSubKeyNames
+
+            Dim subkey As RegistryKey = LocalMachine.OpenSubKey(UNINST_PATH & "\" & s, False)
+
+            Dim displayName As Object = subkey.GetValue("DisplayName")
+
+            If Not displayName Is Nothing Then
+
+                If displayName.ToString().Contains(FIREFOX) Then
+                    FIREFOX_PATH = subkey.GetValue(sk).ToString & "\" & FIREFOX & ".exe"
+                    RadioButtonFF.Enabled = True
+                End If
+
+                If displayName.ToString().Contains(SAFARI) Then
+                    SAFARI_PATH = subkey.GetValue(sk).ToString & "\" & SAFARI & ".exe"
+                    RadioButtonSF.Enabled = True
+                End If
+
+                If displayName.ToString().Contains(OPERA) Then
+                    OPERA_PATH = subkey.GetValue(sk).ToString & "\" & OPERA & ".exe"
+                    RadioButtonOP.Enabled = True
+                End If
+            End If
+        Next
     End Sub
-
-    Private Function GetChromePath() As String
-
-        Dim regkey As Microsoft.Win32.RegistryKey = _
-            Microsoft.Win32.Registry.CurrentUser.OpenSubKey(UNINST_PATH, False)
-
-        If regkey Is Nothing Then
-            Return String.Empty
-        End If
-
-        For Each s As String In regkey.GetSubKeyNames
-            Dim subkey As Microsoft.Win32.RegistryKey = _
-                Microsoft.Win32.Registry.CurrentUser.OpenSubKey(UNINST_PATH & "\" & s, False)
-
-            Dim displayName As String = subkey.GetValue("DisplayName").ToString
-            If Not displayName Is Nothing Then
-
-                If displayName.Contains("Chrome") Then
-                    Return subkey.GetValue("InstallLocation").ToString
-                End If
-            End If
-        Next
-        Return String.Empty
-    End Function
-
-    Private Function GetFirefoxPath() As String
-
-        Dim regkey As Microsoft.Win32.RegistryKey = _
-            Microsoft.Win32.Registry.LocalMachine.OpenSubKey(UNINST_PATH, False)
-
-        If regkey Is Nothing Then
-            Return String.Empty
-        End If
-
-        For Each s As String In regkey.GetSubKeyNames
-
-            Dim subkey As Microsoft.Win32.RegistryKey = _
-                Microsoft.Win32.Registry.LocalMachine.OpenSubKey(UNINST_PATH & "\" & s, False)
-
-            Dim displayName As Object = subkey.GetValue("DisplayName")
-            If Not displayName Is Nothing Then
-
-                If displayName.ToString().Contains("Firefox") Then
-                    Return subkey.GetValue("InstallLocation").ToString
-                End If
-            End If
-        Next
-        Return String.Empty
-    End Function
-
-    Private Function GetOperaPath() As String
-
-        Dim regkey As Microsoft.Win32.RegistryKey = _
-            Microsoft.Win32.Registry.LocalMachine.OpenSubKey(UNINST_PATH, False)
-
-        If regkey Is Nothing Then
-            Return String.Empty
-        End If
-
-        For Each s As String In regkey.GetSubKeyNames
-            Dim subkey As Microsoft.Win32.RegistryKey = _
-                Microsoft.Win32.Registry.LocalMachine.OpenSubKey(UNINST_PATH & "\" & s, False)
-
-            Dim displayName As Object = subkey.GetValue("DisplayName")
-            If Not displayName Is Nothing Then
-
-                If displayName.ToString().Contains("Opera") Then
-                    Return subkey.GetValue("InstallLocation").ToString
-                End If
-            End If
-        Next
-        Return String.Empty
-    End Function
-
-    Private Function GetSafariPath() As String
-
-        Dim regkey As Microsoft.Win32.RegistryKey = _
-            Microsoft.Win32.Registry.LocalMachine.OpenSubKey(UNINST_PATH, False)
-
-        If regkey Is Nothing Then
-            Return String.Empty
-        End If
-
-        For Each s As String In regkey.GetSubKeyNames
-            Dim subkey As Microsoft.Win32.RegistryKey = _
-                Microsoft.Win32.Registry.LocalMachine.OpenSubKey(UNINST_PATH & "\" & s, False)
-
-            Dim displayName As Object = subkey.GetValue("DisplayName")
-            If Not displayName Is Nothing Then
-
-                If displayName.ToString().Contains("Safari") Then
-                    Return subkey.GetValue("InstallLocation").ToString
-                End If
-            End If
-        Next
-        Return String.Empty
-    End Function
 
     Private Sub ButtonOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonOK.Click
 
-        My.Settings.Limit = Decimal.ToInt32(Me.NumericUpDown制限時間.Value)
-        My.Settings.Wait = Decimal.ToInt32(Me.NumericUpDown待ち時間.Value)
-        My.Settings.Sound = Me.CheckBoxSound.Checked
+        My.Settings.Limit = Decimal.ToInt32(NumericUpDown制限時間.Value)
+        My.Settings.Wait = Decimal.ToInt32(NumericUpDown待ち時間.Value)
+        My.Settings.Sound = CheckBoxSound.Checked
 
         Dim browser As String = String.Empty
+        If RadioButtonFF.Checked Then browser = FIREFOX
+        If RadioButtonSF.Checked Then browser = SAFARI
+        If RadioButtonGC.Checked Then browser = CHROME
+        If RadioButtonOP.Checked Then browser = OPERA
+        If RadioButtonIE.Checked Then browser = IE
 
-        If Me.RadioButtonSF.Checked Then
-            browser = SAFARI
-
-        ElseIf Me.RadioButtonOP.Checked Then
-            browser = OPERA
-
-        ElseIf Me.RadioButtonGC.Checked Then
-            browser = CHROME
-
-        ElseIf Me.RadioButtonFF.Checked Then
-            browser = FIREFOX
-        Else
-            browser = IE
-        End If
         My.Settings.Browser = browser
         My.Settings.Save()
 
-        Me.ShowBrowser()
-    End Sub
-
-    Private Sub Buttonキャンセル_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Buttonキャンセル.Click
-        Me.Close()
+        ShowBrowser()
     End Sub
 
     Private Sub ShowBrowser()
 
-        If Not Me.CanProcessStart() Then
+        If Not CanProcessStart() Then
             Return
         End If
 
-        Me.Visible = False
+        Visible = False
 
-        Dim minutes As Integer = Me.GetLastExecutedTime()
+        Dim minutes As Integer = GetLastExecutedTime()
         Dim wait As Integer = My.Settings.Wait
+
         If 0 = minutes Then
-            MessageBox.Show("さっき起動したばっかりだよ！！", _
-                TITLE, MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Me.Close()
-            Me.Dispose()
+            MessageBox.Show("さっき起動したばっかりだよ！！", TITLE, MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Close()
+            Dispose()
             Return
         ElseIf 0 < minutes And minutes < wait Then
-            MessageBox.Show(minutes & " 分前に起動したばっかりだよ！！", _
-                TITLE, MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Me.Close()
-            Me.Dispose()
+            MessageBox.Show(minutes & " 分前に起動したばっかりだよ！！", TITLE, MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Close()
+            Dispose()
             Return
         End If
 
@@ -230,33 +146,21 @@ Public Class Form1
         Dim player As Media.SoundPlayer = Nothing
         Dim p As Process = Nothing
         Dim iexplore As SHDocVw.InternetExplorer = Nothing
+
         Try
             Dim browser As String = My.Settings.Browser
             Dim path As String = String.Empty
-
-            Select Case browser
-
-                Case SAFARI
-                    path = Me.GetSafariPath() & "\safari.exe"
-
-                Case OPERA
-                    path = Me.GetOperaPath() & "\opera.exe"
-
-                Case CHROME
-                    path = Me.GetChromePath() & "\chrome.exe"
-
-                Case FIREFOX
-                    path = Me.GetFirefoxPath() & "\firefox.exe"
-
-                Case Else
-                    path = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) _
-                        & "\Internet Explorer\iexplore.exe"
-            End Select
+            If browser.Equals(FIREFOX) Then path = FIREFOX_PATH
+            If browser.Equals(SAFARI) Then path = SAFARI_PATH
+            If browser.Equals(CHROME) Then path = CHROME_PATH
+            If browser.Equals(OPERA) Then path = OPERA_PATH
+            If browser.Equals(IE) Then path _
+                = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) _
+                & "\Internet Explorer\iexplore.exe"
 
             If browser.Equals(IE) Then
                 iexplore = New SHDocVw.InternetExplorer()
                 iexplore.Visible = True
-
                 For Each pp As Process In Process.GetProcesses()
                     If pp.ProcessName.Equals("iexplore") Then
                         p = pp
@@ -319,8 +223,8 @@ Public Class Form1
                 stream.Dispose()
             End If
 
-            Me.Close()
-            Me.Dispose()
+            Close()
+            Dispose()
         End Try
     End Sub
 
@@ -332,17 +236,21 @@ Public Class Form1
 
         Select Case browser
 
-            Case OPERA
-                processName = "opera"
-                errorMessage = "Opera は既に起動済みです。"
+            Case FIREFOX
+                processName = "firefox"
+                errorMessage = "Mozilla Firefox は既に起動済みです。"
+
+            Case SAFARI
+                processName = "safari"
+                errorMessage = "Safari は既に起動済みです。"
 
             Case CHROME
                 processName = "chrome"
                 errorMessage = "Google Chrome は既に起動済みです。"
 
-            Case FIREFOX
-                processName = "firefox"
-                errorMessage = "Mozilla Firefox は既に起動済みです。"
+            Case OPERA
+                processName = "opera"
+                errorMessage = "Opera は既に起動済みです。"
 
             Case Else
                 processName = "iexplore"
@@ -372,4 +280,8 @@ Public Class Form1
             Return -1
         End If
     End Function
+
+    Private Sub Buttonキャンセル_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Buttonキャンセル.Click
+        Close()
+    End Sub
 End Class
